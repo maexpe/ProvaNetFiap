@@ -6,9 +6,9 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton(builder.Configuration.GetConnectionString("DefaultConnection"));
 
-builder.Services.AddTransient<AlunoRepository>();
-builder.Services.AddTransient<TurmaRepository>();
-builder.Services.AddTransient<AlunoTurmaRepository>();
+builder.Services.AddScoped<AlunoRepository>();
+builder.Services.AddScoped<TurmaRepository>();
+builder.Services.AddScoped<AlunoTurmaRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
