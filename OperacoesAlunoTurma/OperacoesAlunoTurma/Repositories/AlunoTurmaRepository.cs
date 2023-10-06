@@ -58,5 +58,13 @@ namespace OperacoesAlunoTurma.Repositories
             var query = "delete from aluno_turma where aluno_id = @AlunoId and turma_id = @TurmaId";
             connection.Execute(query, new { AlunoId = alunoId, TurmaId = turmaId });
         }
+
+        public bool AssociacaoExiste(int alunoId, int turmaId)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            connection.Open();
+            var query = "select 1 from aluno_turma where aluno_id = @AlunoId and turma_id = @TurmaId";
+            return connection.ExecuteScalar<bool>(query, new { AlunoId = alunoId, TurmaId = turmaId });
+        }
     }
 }
