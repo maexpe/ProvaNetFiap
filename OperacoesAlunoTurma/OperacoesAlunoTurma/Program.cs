@@ -1,6 +1,14 @@
+using OperacoesAlunoTurma.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
+
 builder.Services.AddSingleton(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+builder.Services.AddTransient<AlunoRepository>();
+builder.Services.AddTransient<TurmaRepository>();
+builder.Services.AddTransient<AlunoTurmaRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
