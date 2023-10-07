@@ -17,7 +17,7 @@ namespace OperacoesAlunoTurma.Repositories
         {
             using var connection = new SqlConnection(_connectionString);
             connection.Open();
-            return connection.Query<AlunoTurmaModel>("select * from aluno_turma")
+            return connection.Query<AlunoTurmaModel>("select * from aluno_turma");
         }
 
         public IEnumerable<AlunoModel> GetAllAlunos()

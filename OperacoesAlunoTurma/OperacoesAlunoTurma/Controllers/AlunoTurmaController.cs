@@ -27,7 +27,7 @@ namespace OperacoesAlunoTurma.Controllers
             return View();
         }
 
-        [HttpPost("associate")]
+        [HttpPost]
         public IActionResult Associate(AlunoTurmaModel alunoTurma)
         {
             if (_alunoTurmaRepository.AssociacaoExiste(alunoTurma.AlunoId, alunoTurma.TurmaId))
@@ -47,14 +47,14 @@ namespace OperacoesAlunoTurma.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet("Alunos/{alunoId}/Turmas")]
+        [HttpGet("alunos/{alunoId}/turmas")]
         public IActionResult GetTurmasByAluno(int alunoId)
         {
             var turmas = _alunoTurmaRepository.GetTurmasByAluno(alunoId);
             return View(turmas);
         }
 
-        [HttpGet("Turmas/{turmaId}/Alunos")]
+        [HttpGet("turmas/{turmaId}/alunos")]
         public IActionResult GetAlunosByTurma(int turmaId)
         {
             var alunos = _alunoTurmaRepository.GetAlunosByTurma(turmaId);

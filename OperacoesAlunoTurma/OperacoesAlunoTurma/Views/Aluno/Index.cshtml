@@ -1,0 +1,31 @@
+﻿@model IEnumerable<OperacoesAlunoTurma.Models.AlunoModel>
+
+<h2>Lista de Alunos</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Usuário</th>
+            <th>Senha</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var aluno in Model)
+        {
+            <tr>
+                <td>@aluno.Id</td>
+                <td>@aluno.Nome</td>
+                <td>@aluno.Usuario</td>
+                <td>@aluno.Senha</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Aluno", new { id = aluno.Id })">Editar</a>
+                    <a href="@Url.Action("Delete", "Aluno", new { id = aluno.Id })">Inativar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Create", "Aluno")">Cadastrar Novo Aluno</a>

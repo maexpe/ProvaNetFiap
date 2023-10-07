@@ -22,7 +22,7 @@ namespace OperacoesAlunoTurma.Controllers
             return View(turmas);
         }
 
-        [HttpGet]
+        [HttpGet("create")]
         public IActionResult Create()
         {
             return View();
