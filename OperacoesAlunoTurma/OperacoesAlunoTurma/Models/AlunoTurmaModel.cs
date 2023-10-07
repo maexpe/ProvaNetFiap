@@ -7,7 +7,7 @@
 
         // Propriedades de navegação
 
-        public AlunoModel Aluno { get; set; }
-        public TurmaModel Turma { get; set; } 
+        public AlunoModel? Aluno { get; set; }
+        public TurmaModel? Turma { get; set; } 
     }
 }

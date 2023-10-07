@@ -4,7 +4,7 @@ using OperacoesAlunoTurma.Repositories;
 
 namespace OperacoesAlunoTurma.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AlunoTurmaController : Controller
     {
@@ -15,40 +15,50 @@ namespace OperacoesAlunoTurma.Controllers
             _alunoTurmaRepository = alunoTurmaRepository;
         }
 
-        [HttpPost]
-        public IActionResult Associate([FromBody] AlunoTurmaModel alunoTurma)
+        public IActionResult Index()
+        {
+            var associacoes = _alunoTurmaRepository.GetAllAssociacoes();
+            return View(associacoes);
+        }
+
+        [HttpGet("associate")]
+        public IActionResult Associate()
+        {
+            return View();
+        }
+
+        [HttpPost("associate")]
+        public IActionResult Associate(AlunoTurmaModel alunoTurma)
         {
             if (_alunoTurmaRepository.AssociacaoExiste(alunoTurma.AlunoId, alunoTurma.TurmaId))
             {
-                return BadRequest("Associação já existe.");
+                ModelState.AddModelError("", "Associação já existe.");
+                return View();
             }
 
             _alunoTurmaRepository.AddAssociacao(alunoTurma.AlunoId, alunoTurma.TurmaId);
-            return Ok();
+            return RedirectToAction("Index");
         }
 
         [HttpDelete]
         public IActionResult Disassociate(int alunoId, int turmaId)
         {
             _alunoTurmaRepository.DeleteAssociacao(alunoId, turmaId);
-            return NoContent();
+            return RedirectToAction("Index");
         }
 
         [HttpGet("Alunos/{alunoId}/Turmas")]
         public IActionResult GetTurmasByAluno(int alunoId)
         {
-            return Ok(_alunoTurmaRepository.GetTurmasByAluno(alunoId));
+            var turmas = _alunoTurmaRepository.GetTurmasByAluno(alunoId);
+            return View(turmas);
         }
 
         [HttpGet("Turmas/{turmaId}/Alunos")]
         public IActionResult GetAlunosByTurma(int turmaId)
         {
-            return Ok(_alunoTurmaRepository.GetAlunosByTurma(turmaId));
-        }
-
-        public IActionResult Index()
-        {
-            return View();
+            var alunos = _alunoTurmaRepository.GetAlunosByTurma(turmaId);
+            return View(alunos);
         }
     }
 }

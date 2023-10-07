@@ -13,6 +13,13 @@ namespace OperacoesAlunoTurma.Repositories
             _connectionString = connectionString;
         }
 
+        public IEnumerable<AlunoTurmaModel> GetAllAssociacoes()
+        {
+            using var connection = new SqlConnection(_connectionString);
+            connection.Open();
+            return connection.Query<AlunoTurmaModel>("select * from aluno_turma")
+        }
+
         public IEnumerable<AlunoModel> GetAllAlunos()
         {
             using var connection = new SqlConnection(_connectionString);
