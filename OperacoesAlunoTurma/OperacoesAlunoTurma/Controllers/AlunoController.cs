@@ -4,7 +4,7 @@ using OperacoesAlunoTurma.Repositories;
 
 namespace OperacoesAlunoTurma.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AlunoController : Controller
     {
@@ -16,40 +16,60 @@ namespace OperacoesAlunoTurma.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Index()
         {
-            return Ok(_alunoRepository.GetAll());
+            var alunos = _alunoRepository.GetAll();
+            return View(alunos);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] AlunoModel aluno)
+        public IActionResult Post(AlunoModel aluno)
         {
-            _alunoRepository.Add(aluno);
-            return CreatedAtAction(nameof(Get), new { id = aluno.Id }, aluno);
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] AlunoModel aluno)
-        {
-            if (id != aluno.Id)
+            if (ModelState.IsValid)
             {
-                return BadRequest();
+                _alunoRepository.Add(aluno);
+                return RedirectToAction(nameof(Index));
             }
 
-            _alunoRepository.Update(aluno);
-            return NoContent();
+            return View(aluno);
         }
 
-        [HttpDelete("{id}")]
+        [HttpGet("{id}/edit")]
+        public IActionResult Edit(int id)
+        {
+            var aluno = _alunoRepository.GetById(id);
+            if (aluno == null)
+                return NotFound();
+
+            return View(aluno);
+        }
+
+        [HttpPut("{id}/edit")]
+        public IActionResult Edit(int id, AlunoModel aluno)
+        {
+            if (id != aluno.Id)
+                return BadRequest();
+
+            if (ModelState.IsValid)
+            {
+                _alunoRepository.Update(aluno);
+                return RedirectToAction(nameof(Index));
+            }
+            
+            return View(aluno);
+        }
+
+        [HttpDelete("{id}/delete")]
         public IActionResult Delete(int id)
         {
             _alunoRepository.Delete(id);
-            return NoContent();
-        }
-
-        public IActionResult Index()
-        {
-            return View();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

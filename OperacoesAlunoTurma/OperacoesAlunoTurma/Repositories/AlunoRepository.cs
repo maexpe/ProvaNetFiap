@@ -13,6 +13,13 @@ namespace OperacoesAlunoTurma.Repositories
             _connectionString = connectionString;
         }
 
+        public AlunoModel? GetById(int id)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            connection.Open();
+            return connection.QuerySingleOrDefault<AlunoModel>("select * from aluno where id = @id", new { Id = id });
+        }
+
         public IEnumerable<AlunoModel> GetAll()
         {
             using var connection = new SqlConnection(_connectionString);
