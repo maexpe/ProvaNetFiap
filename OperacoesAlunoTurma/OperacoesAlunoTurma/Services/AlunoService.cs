@@ -17,18 +17,6 @@ namespace OperacoesAlunoTurma.Services
             _passwordHasher = new PasswordHasher<AlunoModel>();
         }
 
-        public bool SenhaForte(string senha)
-        {
-            if (senha.Length < 12 ||
-                !Regex.IsMatch(senha, "[A-Z]") ||
-                !Regex.IsMatch(senha, "[a-z]") ||
-                !Regex.IsMatch(senha, @"\d") ||
-                !Regex.IsMatch(senha, @"[@$#&*{},=().+;'/!%^?\:|<>]"))
-                return false;
-
-            return true;
-        }
-
         public IEnumerable<AlunoModel> GetAll()
         {
             return _alunoRepository.GetAll();
@@ -36,14 +24,14 @@ namespace OperacoesAlunoTurma.Services
 
         public void Add(AlunoModel aluno)
         {
-            ValidarEHashSenha(aluno);
+            HashSenha(aluno);
 
             _alunoRepository.Add(aluno);
         }
 
         public void Update(AlunoModel aluno)
         {
-            ValidarEHashSenha(aluno);
+            HashSenha(aluno);
 
             _alunoRepository.Update(aluno);
         }
@@ -53,11 +41,8 @@ namespace OperacoesAlunoTurma.Services
             _alunoRepository.Delete(id);
         }
 
-        private void ValidarEHashSenha(AlunoModel aluno)
+        private void HashSenha(AlunoModel aluno)
         {
-            if (!SenhaForte(aluno.Senha))
-                throw new InvalidOperationException("Senha muito fraca.");
-
             aluno.Senha = _passwordHasher.HashPassword(aluno, aluno.Senha);
         }
     }
