@@ -13,6 +13,7 @@ builder.Services.AddTransient<AlunoTurmaRepository>();
 
 builder.Services.AddScoped<IAlunoService, AlunoService>();
 builder.Services.AddScoped<ITurmaService, TurmaService>();
+builder.Services.AddScoped<IAlunoTurmaService, AlunoTurmaService>();
 
 builder.Services.AddControllers();
 

@@ -63,8 +63,9 @@ namespace OperacoesAlunoTurma.Repositories
         {
             using var connection = new SqlConnection(_connectionString);
             connection.Open();
-            var query = "select 1 from aluno_turma where aluno_id = @AlunoId and turma_id = @TurmaId";
-            return connection.ExecuteScalar<bool>(query, new { AlunoId = alunoId, TurmaId = turmaId });
+            var query = "select count(*) from aluno_turma where aluno_id = @AlunoId and turma_id = @TurmaId";
+            var count = connection.ExecuteScalar<int>(query, new { AlunoId = alunoId, TurmaId = turmaId });
+            return count > 0;
         }
     }
 }
