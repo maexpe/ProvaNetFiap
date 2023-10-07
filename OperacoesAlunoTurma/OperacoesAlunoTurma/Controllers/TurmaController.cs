@@ -4,7 +4,7 @@ using OperacoesAlunoTurma.Repositories;
 
 namespace OperacoesAlunoTurma.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class TurmaController : Controller
     {
@@ -16,40 +16,60 @@ namespace OperacoesAlunoTurma.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Index()
         {
-            return Ok(_turmaRepository.GetAll());
+            var turmas = _turmaRepository.GetAll();
+            return View(turmas);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] TurmaModel turma)
+        public IActionResult Post(TurmaModel turma)
         {
-            _turmaRepository.Add(turma);
-            return CreatedAtAction(nameof(Get), new { id = turma.Id }, turma);
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] TurmaModel turma)
-        {
-            if (id != turma.Id)
+            if (ModelState.IsValid)
             {
-                return BadRequest();
+                _turmaRepository.Add(turma);
+                return RedirectToAction(nameof(Index));
             }
 
-            _turmaRepository.Update(turma);
-            return NoContent();
+            return View(turma);
         }
 
-        [HttpDelete("{id}")]
+        [HttpGet("{id}/edit")]
+        public IActionResult Edit(int id)
+        {
+            var turma = _turmaRepository.GetById(id);
+            if (turma == null)
+                return NotFound();
+
+            return View(turma);
+        }
+
+        [HttpPut("{id}/edit")]
+        public IActionResult Edit(int id, TurmaModel turma)
+        {
+            if (id != turma.Id)
+                return BadRequest();
+
+            if (ModelState.IsValid)
+            {
+                _turmaRepository.Update(turma);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(turma);
+        }
+
+        [HttpDelete("{id}/delete")]
         public IActionResult Delete(int id)
         {
             _turmaRepository.Delete(id);
-            return NoContent();
-        }
-
-        public IActionResult Index()
-        {
-            return View();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

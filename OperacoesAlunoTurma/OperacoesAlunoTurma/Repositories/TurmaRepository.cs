@@ -13,6 +13,13 @@ namespace OperacoesAlunoTurma.Repositories
             _connectionString = connectionString;
         }
 
+        public TurmaModel? GetById(int id)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            connection.Open();
+            return connection.QuerySingleOrDefault<TurmaModel>("select * from turma where id = @id", new { Id = id });
+        }
+
         public IEnumerable<TurmaModel> GetAll()
         {
             using var connection = new SqlConnection(_connectionString);
