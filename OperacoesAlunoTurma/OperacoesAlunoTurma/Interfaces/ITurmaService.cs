@@ -9,5 +9,6 @@ namespace OperacoesAlunoTurma.Interfaces
         void Add(TurmaModel turma);
         void Update(TurmaModel turma);
         void Delete(int id);
+        TurmaModel? GetByNome(string nome);
     }
 }

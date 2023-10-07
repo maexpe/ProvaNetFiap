@@ -43,5 +43,12 @@ namespace OperacoesAlunoTurma.Repositories
             var query = "delete from turma where id = @id";
             connection.Execute(query, new { Id = id });
         }
+
+        public TurmaModel? GetByNome(string nome)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            connection.Open();
+            return connection.Query<TurmaModel>("select * from turma where turma = @Nome", new { Nome = nome }).FirstOrDefault();
+        }
     }
 }
