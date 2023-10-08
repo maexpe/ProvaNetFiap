@@ -4,7 +4,7 @@ namespace OperacoesAlunoTurma.Models
 {
     public class AlunoModel
     {
-        public int Id { get; set; }
+        public int Id { get; set; }        
         [DataType(DataType.Text)]
         [Required(ErrorMessage="Insira um nome.")]
         [MaxLength(255)]

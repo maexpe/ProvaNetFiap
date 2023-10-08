@@ -53,16 +53,11 @@ namespace OperacoesAlunoTurma.Controllers
         [HttpPut("{id}/edit")]
         public IActionResult Edit(int id, AlunoModel aluno)
         {
-            if (id != aluno.Id)
-                return BadRequest();
+            if (id != aluno.Id || aluno == null | aluno.Id <= 0)
+                return BadRequest(new { message = "Dados de aluno inválidos." });
 
-            if (ModelState.IsValid)
-            {
-                _alunoRepository.Update(aluno);
-                return RedirectToAction(nameof(Index));
-            }
-            
-            return View(aluno);
+            _alunoRepository.Update(aluno);
+            return Json(new { message = "Atualização bem sucedida." });
         }
 
         [HttpDelete("{id}/delete")]

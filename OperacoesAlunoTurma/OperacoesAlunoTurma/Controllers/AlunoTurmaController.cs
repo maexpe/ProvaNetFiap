@@ -15,6 +15,7 @@ namespace OperacoesAlunoTurma.Controllers
             _alunoTurmaRepository = alunoTurmaRepository;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             var associacoes = _alunoTurmaRepository.GetAllAssociacoes();
