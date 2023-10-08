@@ -22,22 +22,22 @@ namespace OperacoesAlunoTurma.Controllers
             return View(alunos);
         }
 
-        [HttpGet("create")]
-        public IActionResult Create()
-        {
-            return View();
-        }
+        //[HttpGet("create")]
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
         [HttpPost]
-        public IActionResult Post(AlunoModel aluno)
+        public IActionResult Create([FromForm] AlunoModel aluno)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _alunoRepository.Add(aluno);
-                return RedirectToAction(nameof(Index));
+                return View(aluno);
             }
 
-            return View(aluno);
+            _alunoRepository.Add(aluno);
+            return RedirectToAction("Index");
         }
 
         [HttpGet("{id}/edit")]

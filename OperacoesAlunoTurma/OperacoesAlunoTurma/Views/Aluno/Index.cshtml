@@ -8,12 +8,12 @@
     <title>Index</title>
 </head>
 <body>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-targets="#editModal">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="editModal">
     Editar
 </button>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<button type="button" id="createModalButton" class="btn btn-primary">
+    Cadastrar Aluno
+</button>
 <table class="table">
     <thead>
         <tr>
@@ -59,14 +59,46 @@
                 </form>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">Cadastrar Nova Aluna</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="@Url.Action("Create", "Aluno")">
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <input type="text" class="form-control" id="nome" name="Nome" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="usuario">Usuário</label>
+                        <input type="text" class="form-control" id="usuario" name="Usuario" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="senha">Senha</label>
+                        <input type="text" class="form-control" id="senha" name="Senha" required />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="#editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Editar Aluno</h5>
+                <h5 class="modal-title" id="#editModalLabel">Editar Aluno</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -128,6 +160,13 @@
                         alert("Erro ao atualizar o aluno.")
                     }
                 });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#createModalButton').on('click', function () {
+                $('#createModal').modal('show');
             });
         });
     </script>
