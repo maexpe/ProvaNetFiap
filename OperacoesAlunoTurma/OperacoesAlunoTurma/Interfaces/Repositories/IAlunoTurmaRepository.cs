@@ -2,8 +2,9 @@
 
 namespace OperacoesAlunoTurma.Interfaces
 {
-    public interface IAlunoTurmaService
+    public interface IAlunoTurmaRepository
     {
+        IEnumerable<AlunoTurmaModel> GetAllAssociacoes();
         IEnumerable<AlunoModel> GetAllAlunos();
         IEnumerable<TurmaModel> GetAllTurmas();
         IEnumerable<AlunoModel> GetAlunosByTurma(int turmaId);

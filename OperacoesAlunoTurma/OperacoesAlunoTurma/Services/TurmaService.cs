@@ -1,4 +1,5 @@
 ﻿using OperacoesAlunoTurma.Interfaces;
+using OperacoesAlunoTurma.Interfaces.Services;
 using OperacoesAlunoTurma.Models;
 using OperacoesAlunoTurma.Repositories;
 
@@ -6,9 +7,9 @@ namespace OperacoesAlunoTurma.Services
 {
     public class TurmaService : ITurmaService
     {
-        private readonly TurmaRepository _turmaRepository;
+        private readonly ITurmaRepository _turmaRepository;
 
-        public TurmaService(TurmaRepository turmaRepository)
+        public TurmaService(ITurmaRepository turmaRepository)
         {
             _turmaRepository = turmaRepository;
         }

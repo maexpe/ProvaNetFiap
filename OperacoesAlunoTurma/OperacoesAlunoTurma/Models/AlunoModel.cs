@@ -15,7 +15,6 @@ namespace OperacoesAlunoTurma.Models
         public string? Usuario { get; set; }
         [DataType(DataType.Text)]
         [Required(ErrorMessage = "Insira uma senha.")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#&*{},=().+;'/!%^?\:|<>]).{12,60}$", ErrorMessage = "Senha fraca. Use uma combinação de 12 a 60 caracteres com letras maiúsculas, minúsculas, números e caracteres especiais.")]
         public string? Senha { get; set; }
     }
 }

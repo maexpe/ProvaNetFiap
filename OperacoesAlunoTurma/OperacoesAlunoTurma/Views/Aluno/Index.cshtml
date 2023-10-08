@@ -67,12 +67,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createModalLabel">Cadastrar Novo Aluno</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                <button type="button" id="createModalCloseX" class="close" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" action="@Url.Action("Create", "Aluno")">
+                <form method="post" id="createForm" action="@Url.Action("Create", "Aluno")">
                     <div class="form-group">
                         <label for="nome">Nome</label>
                         <input type="text" class="form-control" id="nome" name="Nome" required />
@@ -83,10 +83,10 @@
                     </div>
                     <div class="form-group">
                         <label for="senha">Senha</label>
-                        <input type="text" class="form-control" id="senha" name="Senha" required />
+                        <input type="text" class="form-control" id="createSenha" name="Senha" required />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" id="createModalCloseButton" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                         <button type="submit" class="btn btn-primary">Salvar</button>
                     </div>
                 </form>
@@ -129,39 +129,60 @@
 </div>
 @section scripts {
     <script>
-        $(document).ready(function () {
-            $(".btn-edit").click(function () {
-                let id = $(this).data("id");
-                let nome = $(this).data("nome");
-                let usuario = $(this).data("usuario");
-                let senha = $(this).data("senha");
+            $(document).ready(function () {
+                $(".btn-edit").click(function () {
+                    let id = $(this).data("id");
+                    let nome = $(this).data("nome");
+                    let usuario = $(this).data("usuario");
+                    let senha = $(this).data("senha");
 
-                $("#editId").val(id);
-                $("#editNome").val(nome);
-                $("#editUsuario").val(usuario);
-                $("#editSenha").val(senha);
+                    $("#editId").val(id);
+                    $("#editNome").val(nome);
+                    $("#editUsuario").val(usuario);
+                    $("#editSenha").val(senha);
 
-                $("#editModal").modal('show');
-            });
+                    $("#editModal").modal('show');
+                });
 
-            $("#editForm").submit(function (event) {
-                event.preventDefault();
+                $("#createForm, #editForm").submit(function (e) {
+                    var passwordField;
 
-                let formData = $(this).serialize();
+                    if ($(this).attr("id") === "createForm") {
+                        passwordField = $(this).find("#createSenha");
+                    } else if ($(this).attr("id") === "editForm") {
+                        passwordField = $(this).find("#editSenha");
+                    }
 
-                $.ajax({
-                    url: '/Aluno/Edit/' + $("#editId").val(),
-                    type: 'Put',
-                    data: formData,
-                    success: function (response) {
-                        location.reload();
-                    },
-                    error: function (error) {
-                        alert("Erro ao atualizar o aluno.")
+                    var password = passwordField.val();
+                    var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@@$#&*{},=().+;'/!%^?\:|<>]).{12,60}$/;
+
+                    if (!regex.test(password)) {
+                        alert("Senha muito fraca. A senha deve possuir pelo menos 12 caracteres, uma letra maiúscula e uma minúscula, um número e um caractere especial.");
+                        e.preventDefault(); // Clear the input
+                        e.stopPropagation();
+                        return; // Exit out of the submit handler
+                    }
+
+                    // Only for editForm
+                    if ($(this).attr("id") === "editForm") {
+                        let formData = $(this).serialize();
+
+                        $.ajax({
+                            url: '/Aluno/Edit/' + $("#editId").val(),
+                            type: 'Put',
+                            data: formData,
+                            success: function (response) {
+                                location.reload();
+                            },
+                            error: function (error) {
+                                alert("Erro ao atualizar o aluno.")
+                            }
+                        });
+
+                        e.preventDefault(); // Ensure default form submission is prevented for AJAX
                     }
                 });
             });
-        });
         $(document).ready(function () {
             $('#createModalButton').on('click', function () {
                 $('#createModal').modal('show');
@@ -180,6 +201,16 @@
         $(document).ready(function () {
             $('#editModalCloseButton').on('click', function () {
                 $('#editModal').modal('hide');
+            });
+        });
+        $(document).ready(function () {
+            $('#createModalCloseX').on('click', function () {
+                $('#createModal').modal('hide');
+            });
+        });
+        $(document).ready(function () {
+            $('#createModalCloseButton').on('click', function () {
+                $('#createModal').modal('hide');
             });
         });
     </script>

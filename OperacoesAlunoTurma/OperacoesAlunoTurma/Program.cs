@@ -1,4 +1,6 @@
+using Microsoft.Extensions.DependencyInjection;
 using OperacoesAlunoTurma.Interfaces;
+using OperacoesAlunoTurma.Interfaces.Services;
 using OperacoesAlunoTurma.Repositories;
 using OperacoesAlunoTurma.Services;
 
@@ -14,6 +16,10 @@ builder.Services.AddTransient<AlunoTurmaRepository>();
 builder.Services.AddScoped<IAlunoService, AlunoService>();
 builder.Services.AddScoped<ITurmaService, TurmaService>();
 builder.Services.AddScoped<IAlunoTurmaService, AlunoTurmaService>();
+
+builder.Services.AddScoped<IAlunoRepository, AlunoRepository>();
+builder.Services.AddScoped<ITurmaRepository, TurmaRepository>();
+builder.Services.AddScoped<IAlunoTurmaRepository, AlunoTurmaRepository>();
 
 builder.Services.AddControllers();
 

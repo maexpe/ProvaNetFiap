@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using OperacoesAlunoTurma.Interfaces;
+using OperacoesAlunoTurma.Interfaces.Services;
 using OperacoesAlunoTurma.Models;
 using OperacoesAlunoTurma.Repositories;
 using System.Text.RegularExpressions;
@@ -8,10 +9,10 @@ namespace OperacoesAlunoTurma.Services
 {
     public class AlunoService : IAlunoService
     {
-        private readonly AlunoRepository _alunoRepository;
+        private readonly IAlunoRepository _alunoRepository;
         private readonly PasswordHasher<AlunoModel> _passwordHasher;
 
-        public AlunoService(AlunoRepository alunoRepository)
+        public AlunoService(IAlunoRepository alunoRepository)
         {
             _alunoRepository = alunoRepository;
             _passwordHasher = new PasswordHasher<AlunoModel>();

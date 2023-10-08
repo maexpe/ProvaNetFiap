@@ -1,6 +1,6 @@
 ﻿using OperacoesAlunoTurma.Models;
 
-namespace OperacoesAlunoTurma.Interfaces
+namespace OperacoesAlunoTurma.Interfaces.Services
 {
     public interface ITurmaService
     {

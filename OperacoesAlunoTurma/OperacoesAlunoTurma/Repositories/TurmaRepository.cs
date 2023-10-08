@@ -1,10 +1,11 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using OperacoesAlunoTurma.Interfaces;
 using OperacoesAlunoTurma.Models;
 
 namespace OperacoesAlunoTurma.Repositories
 {
-    public class TurmaRepository
+    public class TurmaRepository : ITurmaRepository
     {
         private readonly string _connectionString;
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OperacoesAlunoTurma.Models;
-using OperacoesAlunoTurma.Services;
+using OperacoesAlunoTurma.Interfaces.Services;
 
 namespace OperacoesAlunoTurma.Controllers
 {
@@ -8,9 +8,9 @@ namespace OperacoesAlunoTurma.Controllers
     [ApiController]
     public class AlunoController : Controller
     {
-        private readonly AlunoService _alunoService;
+        private readonly IAlunoService _alunoService;
 
-        public AlunoController(AlunoService alunoService)
+        public AlunoController(IAlunoService alunoService)
         {
             _alunoService = alunoService;
         }

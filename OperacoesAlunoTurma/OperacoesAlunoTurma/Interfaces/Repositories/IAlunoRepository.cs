@@ -2,10 +2,10 @@
 
 namespace OperacoesAlunoTurma.Interfaces
 {
-    public interface IAlunoService
+    public interface IAlunoRepository
     {
+        AlunoModel? GetById(int id);
         IEnumerable<AlunoModel> GetAll();
-        AlunoModel GetById(int id);
         void Add(AlunoModel aluno);
         void Update(AlunoModel aluno);
         void Delete(int id);
