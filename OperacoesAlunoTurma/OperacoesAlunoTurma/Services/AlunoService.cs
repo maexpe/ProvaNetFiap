@@ -22,6 +22,11 @@ namespace OperacoesAlunoTurma.Services
             return _alunoRepository.GetAll();
         }
 
+        public AlunoModel? GetById(int id)
+        {
+            return _alunoRepository.GetById(id);
+        }
+
         public void Add(AlunoModel aluno)
         {
             HashSenha(aluno);

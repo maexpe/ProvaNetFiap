@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OperacoesAlunoTurma.Models;
-using OperacoesAlunoTurma.Repositories;
+using OperacoesAlunoTurma.Services;
 
 namespace OperacoesAlunoTurma.Controllers
 {
@@ -8,17 +8,17 @@ namespace OperacoesAlunoTurma.Controllers
     [ApiController]
     public class AlunoController : Controller
     {
-        private readonly AlunoRepository _alunoRepository;
+        private readonly AlunoService _alunoService;
 
-        public AlunoController(AlunoRepository alunoRepository)
+        public AlunoController(AlunoService alunoService)
         {
-            _alunoRepository = alunoRepository;
+            _alunoService = alunoService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var alunos = _alunoRepository.GetAll();
+            var alunos = _alunoService.GetAll();
             return View(alunos);
         }
 
@@ -36,14 +36,14 @@ namespace OperacoesAlunoTurma.Controllers
                 return View(aluno);
             }
 
-            _alunoRepository.Add(aluno);
+            _alunoService.Add(aluno);
             return RedirectToAction("Index");
         }
 
         [HttpGet("edit/{id}")]
         public IActionResult Edit([FromForm] int id)
         {
-            var aluno = _alunoRepository.GetById(id);
+            var aluno = _alunoService.GetById(id);
             if (aluno == null)
                 return NotFound();
 
@@ -56,14 +56,14 @@ namespace OperacoesAlunoTurma.Controllers
             if (id != aluno.Id || aluno == null | aluno.Id <= 0)
                 return BadRequest(new { message = "Dados de aluno inválidos." });
 
-            _alunoRepository.Update(aluno);
+            _alunoService.Update(aluno);
             return Json(new { message = "Atualização bem sucedida." });
         }
 
         [HttpDelete("{id}/delete")]
         public IActionResult Delete(int id)
         {
-            _alunoRepository.Delete(id);
+            _alunoService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
     }
