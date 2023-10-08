@@ -60,7 +60,7 @@ namespace OperacoesAlunoTurma.Controllers
             return Json(new { message = "Atualização bem sucedida." });
         }
 
-        [HttpDelete("{id}/delete")]
+        [HttpPost("delete/{id}")]
         public IActionResult Delete(int id)
         {
             _alunoService.Delete(id);
