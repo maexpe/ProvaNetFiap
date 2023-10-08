@@ -32,7 +32,7 @@ namespace OperacoesAlunoTurma.Repositories
         {
             using var connection = new SqlConnection(_connectionString);
             connection.Open();
-            var query = "insert into turma(cursoid, turma, ano) values (@cursoid, @turma, @ano)";
+            var query = "insert into turma(curso_id, turma, ano) values (@cursoid, @turma, @ano)";
             connection.Execute(query, turma);
         }
 
@@ -40,7 +40,7 @@ namespace OperacoesAlunoTurma.Repositories
         {
             using var connection = new SqlConnection(_connectionString);
             connection.Open();
-            var query = "update turma set cursoid = @cursoid, turma = @turma, ano = @ano where id = @id";
+            var query = "update turma set curso_id = @cursoid, turma = @turma, ano = @ano where id = @id";
             connection.Execute(query, turma);
         }
 

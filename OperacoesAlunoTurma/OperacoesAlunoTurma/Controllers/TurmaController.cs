@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OperacoesAlunoTurma.Interfaces.Services;
 using OperacoesAlunoTurma.Models;
 using OperacoesAlunoTurma.Repositories;
+using OperacoesAlunoTurma.Services;
 
 namespace OperacoesAlunoTurma.Controllers
 {
@@ -8,42 +10,42 @@ namespace OperacoesAlunoTurma.Controllers
     [ApiController]
     public class TurmaController : Controller
     {
-        private readonly TurmaRepository _turmaRepository;
+        private readonly ITurmaService _turmaService;
 
-        public TurmaController(TurmaRepository turmaRepository)
+        public TurmaController(ITurmaService turmaService)
         {
-            _turmaRepository = turmaRepository;
+            _turmaService = turmaService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var turmas = _turmaRepository.GetAll();
+            var turmas = _turmaService.GetAll();
             return View(turmas);
         }
 
-        [HttpGet("create")]
-        public IActionResult Create()
-        {
-            return View();
-        }
+        //[HttpGet("create")]
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
         [HttpPost]
-        public IActionResult Post(TurmaModel turma)
+        public IActionResult Create([FromForm] TurmaModel turma)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _turmaRepository.Add(turma);
-                return RedirectToAction(nameof(Index));
+                return View(turma);
             }
 
-            return View(turma);
+            _turmaService.Add(turma);
+            return RedirectToAction("Index");
         }
 
         [HttpGet("{id}/edit")]
-        public IActionResult Edit(int id)
+        public IActionResult Edit([FromForm] int id)
         {
-            var turma = _turmaRepository.GetById(id);
+            var turma = _turmaService.GetById(id);
             if (turma == null)
                 return NotFound();
 
@@ -51,24 +53,24 @@ namespace OperacoesAlunoTurma.Controllers
         }
 
         [HttpPut("{id}/edit")]
-        public IActionResult Edit(int id, TurmaModel turma)
+        public IActionResult Edit(int id, [FromForm] TurmaModel turma)
         {
             if (id != turma.Id)
                 return BadRequest();
 
             if (ModelState.IsValid)
             {
-                _turmaRepository.Update(turma);
-                return RedirectToAction(nameof(Index));
+                _turmaService.Update(turma);
+                return Json(new { message = "Atualização bem sucedida." });
             }
 
             return View(turma);
         }
 
-        [HttpDelete("{id}/delete")]
+        [HttpDelete("delete/{id}")]
         public IActionResult Delete(int id)
         {
-            _turmaRepository.Delete(id);
+            _turmaService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
     }

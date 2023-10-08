@@ -50,7 +50,7 @@ namespace OperacoesAlunoTurma.Controllers
             return View(aluno);
         }
 
-        [HttpPut("edit/{id}")]
+        [HttpPut("{id}/edit")]
         public IActionResult Edit(int id, [FromForm] AlunoModel aluno)
         {
             if (id != aluno.Id || aluno == null | aluno.Id <= 0)

@@ -1,0 +1,285 @@
+﻿@model IEnumerable<OperacoesAlunoTurma.Models.TurmaModel>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    @* <button type="button" id="editModalButton" class="btn btn-primary">
+    Editar
+    </button> *@
+    <button type="button" id="createModalButton" class="btn btn-primary">
+        Cadastrar Turma
+    </button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CursoId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Turma)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ano)
+                </th>
+                <th>
+                    Ações
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CursoId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Turma)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ano)
+                    </td>
+                    <td>
+                        <button type="button" id="editModalButton" class="btn btn-edit" data-id="@item.Id" data-nome="@item.CursoId" data-usuario="@item.Turma" data-senha="@item.Ano">
+                            Editar
+                        </button>
+                        <button type="button" class="btn-delete-direct" data-id="@item.Id">
+                            Remover
+                        </button>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createModalLabel">Cadastrar Nova Turma</h5>
+                    <button type="button" id="createModalCloseX" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id="createForm" action="@Url.Action("Create", "Turma")">
+                        <div class="form-group">
+                            <label for="createCursoId">ID do Curso</label>
+                            <input type="text" class="form-control" id="createCursoId" name="ID do Curso" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="createTurma">Turma</label>
+                            <input type="text" class="form-control" id="createTurma" name="Turma" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="createAno">Ano</label>
+                            <input type="text" class="form-control" id="createAno" name="Ano" required />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="createModalCloseButton" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Turma</h5>
+                    <button type="button" id="editModalCloseX" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <input type="hidden" id="editId" name="Id" />
+                        <div class="form-group">
+                            <label for="editCursoId">ID do Curso</label>
+                            <input type="text" class="form-control" id="editCursoId" name="ID do Curso">
+                        </div>
+                        <div class="form-group">
+                            <label for="editTurma">Turma</label>
+                            <input type="text" class="form-control" id="editTurma" name="Turma">
+                        </div>
+                        <div class="form-group">
+                            <label for="editAno">Ano</label>
+                            <input type="text" class="form-control" id="editAno" name="Ano">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="editModalCloseButton" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+    <h5 class="modal-title" id="deleteModalLabel">Delete Confirmation</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+    Are you sure you want to delete this item?
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+    </div>
+    </div>
+    </div>
+    </div> *@
+
+    @section scripts {
+        <script>
+            $(document).ready(function () {
+                $(".btn-edit").click(function () {
+                    let id = $(this).data("id");
+                    let cursoid = $(this).data("cursoid");
+                    let turma = $(this).data("turma");
+                    let ano = $(this).data("ano");
+
+                    $("#editId").val(id);
+                    $("#editCursoId").val(cursoid);
+                    $("#editTurma").val(turma);
+                    $("#editAno").val(ano);
+
+                    $("#editModal").modal('show');
+                });
+
+                $("#createForm, #editForm").submit(function (e) {
+                    var turmaField;
+                    var anoField;
+
+                    if ($(this).attr("id") === "createForm") {
+                        turmaField = $(this).find("#createTurma");
+                        anoField = $(this).find("#createAno");
+                    } else if ($(this).attr("id") === "editForm") {
+                        turmaField = $(this).find("#editTurma");
+                        anoField = $(this).find("#editAno");
+                    }
+
+                    var turma = turmaField.val();
+                    var ano = anoField.val();
+
+                    var anoAtual = new Date().getFullYear();
+
+                    if (turma.length > 45) {
+                        alert("Turma deve ter no máximo 45 caracteres.")
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return;
+                    }
+
+                    if (ano.length > 4) {
+                        alert("Ano deve ter no máximo 4 caracteres.")
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return;
+                    } else if (ano < anoAtual) {
+                        alert("Ano não pode ser anterior ao atual.")
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return;
+                    }
+
+                    // Only for editForm
+                    if ($(this).attr("id") === "editForm") {
+                        let formData = $(this).serialize();
+
+                        $.ajax({
+                            url: '/Turma/Edit/' + $("#editId").val(),
+                            type: 'Put',
+                            data: formData,
+                            success: function (response) {
+                                location.reload();
+                            },
+                            error: function (error) {
+                                alert("Erro ao atualizar a turma.")
+                            }
+                        });
+
+                        e.preventDefault(); // Ensure default form submission is prevented for AJAX
+                    }
+                });
+            });
+            $(document).ready(function () {
+                $('#createModalButton').on('click', function () {
+                    $('#createModal').modal('show');
+                });
+            });
+            $(document).ready(function () {
+                $('#editModalButton').on('click', function () {
+                    $('#editModal').modal('show');
+                });
+            });
+            $(document).ready(function () {
+                $('.deleteModalButton').on('click', function () {
+                    $('#deleteModal').modal('show');
+                });
+            });
+            $(document).ready(function () {
+                $('#editModalCloseX').on('click', function () {
+                    $('#editModal').modal('hide');
+                });
+            });
+            $(document).ready(function () {
+                $('#editModalCloseButton').on('click', function () {
+                    $('#editModal').modal('hide');
+                });
+            });
+            $(document).ready(function () {
+                $('#createModalCloseX').on('click', function () {
+                    $('#createModal').modal('hide');
+                });
+            });
+            $(document).ready(function () {
+                $('#createModalCloseButton').on('click', function () {
+                    $('#createModal').modal('hide');
+                });
+            });
+            $(document).ready(function () {
+                $(".btn-delete-direct").click(function () {
+                    let itemId = $(this).data("id");
+                    // $("#confirmDelete").attr("id", itemId);
+                    // $("#deleteModal").modal('show');
+
+                    if (!confirm("Tem certeza de que deseja deletar este item?")) {
+                        return;
+                    }
+
+                    let url = '/Turma/Delete/' + itemId;
+                    console.log("URL:", url);
+                    $.ajax({
+                        url: '/Turma/Delete/' + itemId,
+                        type: 'Post',
+                        success: function (response) {
+                            location.reload();
+                        },
+                        error: function (error) {
+                            alert("Failed to delete item.");
+                        }
+                    });
+                });
+            });
+        </script>
+    }
+</body>
+</html>

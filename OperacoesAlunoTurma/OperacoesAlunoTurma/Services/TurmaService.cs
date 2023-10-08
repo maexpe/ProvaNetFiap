@@ -25,16 +25,21 @@ namespace OperacoesAlunoTurma.Services
             return _turmaRepository.GetAll();
         }
 
+        public TurmaModel? GetById(int id)
+        {
+            return _turmaRepository.GetById(id);
+        }
+
         public void Add(TurmaModel turma)
         {
-            NomeUniqueEAnoValido(turma);
+            //NomeUniqueEAnoValido(turma);
 
             _turmaRepository.Add(turma);
         }
 
         public void Update(TurmaModel turma)
         {
-            NomeUniqueEAnoValido(turma);
+            //NomeUniqueEAnoValido(turma);
 
             _turmaRepository.Add(turma);
         }
@@ -49,13 +54,13 @@ namespace OperacoesAlunoTurma.Services
             return _turmaRepository.GetByNome(nome);
         }
 
-        private void NomeUniqueEAnoValido(TurmaModel turma)
-        {
-            if (!TurmaNomeUnique(turma.Turma))
-                throw new InvalidOperationException("Nome da turma deve ser único.");
+        //private void NomeUniqueEAnoValido(TurmaModel turma)
+        //{
+        //    if (!TurmaNomeUnique(turma.Turma))
+        //        throw new InvalidOperationException("Nome da turma deve ser único.");
 
-            if (turma.Ano < DateTime.Now.Year)
-                throw new InvalidOperationException("Ano da turma não pode ser anterior ao atual");
-        }
+        //    if (turma.Ano < DateTime.Now.Year)
+        //        throw new InvalidOperationException("Ano da turma não pode ser anterior ao atual");
+        //}
     }
 }
