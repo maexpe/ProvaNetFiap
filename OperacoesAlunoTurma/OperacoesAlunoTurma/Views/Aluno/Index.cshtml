@@ -8,9 +8,9 @@
     <title>Index</title>
 </head>
 <body>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="editModal">
+@* <button type="button" id="editModalButton" class="btn btn-primary">
     Editar
-</button>
+</button> *@
 <button type="button" id="createModalButton" class="btn btn-primary">
     Cadastrar Aluno
 </button>
@@ -51,7 +51,7 @@
                 @Html.DisplayFor(modelItem => item.Senha)
             </td>
             <td>
-                <button class="btn btn-edit" data-id="@item.Id" data-nome="@item.Nome" data-usuario="@item.Usuario">
+                <button type="button" id="editModalButton" class="btn btn-edit" data-id="@item.Id" data-nome="@item.Nome" data-usuario="@item.Usuario" data-senha="@item.Senha">
                     Editar
                 </button>
                 <form method="post" action="/Aluno/Delete/@item.Id" style="display:inline;">
@@ -66,7 +66,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createModalLabel">Cadastrar Nova Aluna</h5>
+                <h5 class="modal-title" id="createModalLabel">Cadastrar Novo Aluno</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -94,12 +94,12 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="#editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="#editModalLabel">Editar Aluno</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                <h5 class="modal-title" id="editModalLabel">Editar Aluno</h5>
+                    <button type="button" id="editModalCloseX" class="close" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -122,7 +122,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-secondary" id="editModalCloseButton" data-dismiss="modal">Fechar</button>
             </div>
         </div>
     </div>
@@ -130,7 +130,7 @@
 @section scripts {
     <script>
         $(document).ready(function () {
-            $(".bn-edit").click(function () {
+            $(".btn-edit").click(function () {
                 let id = $(this).data("id");
                 let nome = $(this).data("nome");
                 let usuario = $(this).data("usuario");
@@ -150,8 +150,8 @@
                 let formData = $(this).serialize();
 
                 $.ajax({
-                    url: '/Aluno/Edit',
-                    type: 'Post',
+                    url: '/Aluno/Edit/' + $("#editId").val(),
+                    type: 'Put',
                     data: formData,
                     success: function (response) {
                         location.reload();
@@ -162,11 +162,24 @@
                 });
             });
         });
-    </script>
-    <script>
         $(document).ready(function () {
             $('#createModalButton').on('click', function () {
                 $('#createModal').modal('show');
+            });
+        });
+        $(document).ready(function () {
+            $('#editModalButton').on('click', function () {
+                $('#editModal').modal('show');
+            });
+        });
+        $(document).ready(function () {
+            $('#editModalCloseX').on('click', function () {
+                $('#editModal').modal('hide');
+            });
+        });
+        $(document).ready(function () {
+            $('#editModalCloseButton').on('click', function () {
+                $('#editModal').modal('hide');
             });
         });
     </script>

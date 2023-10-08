@@ -40,8 +40,8 @@ namespace OperacoesAlunoTurma.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet("{id}/edit")]
-        public IActionResult Edit(int id)
+        [HttpGet("edit/{id}")]
+        public IActionResult Edit([FromForm] int id)
         {
             var aluno = _alunoRepository.GetById(id);
             if (aluno == null)
@@ -50,8 +50,8 @@ namespace OperacoesAlunoTurma.Controllers
             return View(aluno);
         }
 
-        [HttpPut("{id}/edit")]
-        public IActionResult Edit(int id, AlunoModel aluno)
+        [HttpPut("edit/{id}")]
+        public IActionResult Edit(int id, [FromForm] AlunoModel aluno)
         {
             if (id != aluno.Id || aluno == null | aluno.Id <= 0)
                 return BadRequest(new { message = "Dados de aluno inválidos." });
